@@ -1,4 +1,18 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.numbers{
+  margin: 10px;
+  font-size: 20px;
 }
