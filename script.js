@@ -56,7 +56,6 @@ const clickButton = (index) => {
     clickedItem.push(indexNumber)
   }
 
-  console.log("clickeditem: " + clickedItem)
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
   } else if (indexNumber === ".") {
@@ -73,16 +72,17 @@ const clickButton = (index) => {
       currentNumber = ""
     }
     clickedNumber.push(indexNumber)
-    console.log(clickedNumber)
+    console.log("clicked:" +clickedNumber)
   }
   screenResult.appendChild(specificNumber)
 }
 
 const finalResult = () => {
+  const onlyNumbers = clickedNumber.filter((num) => num >= "0" && num <= "9")
+  console.log("number " + onlyNumbers)
   if (clickedNumber.includes("+")) {
     // reference: https://stackabuse.com/bytes/strip-non-numeric-characters-from-a-string-in-javascript/
-    const onlyNumbers = clickedNumber.filter((num) => num >= "0" && num <= "9")
-    console.log(onlyNumbers)
+
     onlyNumbers.forEach((num) => {
       result += parseFloat(num)
     })
@@ -91,15 +91,22 @@ const finalResult = () => {
     total.innerText = result
     screenResult.appendChild(total)
   } else if (clickedNumber.includes("-")) {
-    const onlyNumbers = clickedNumber.filter((num) => num >= "0" && num <= "9")
-    console.log(onlyNumbers)
-    let resultSub = parseFloat(onlyNumbers[0])
-    onlyNumbers.forEach((num) => {
-      resultSub -= parseFloat(num)
+    result = parseFloat(onlyNumbers[0])
+    onlyNumbers.slice(1).forEach((num) => {
+      result -= parseFloat(num)
     })
     const sub = document.createElement("span")
     sub.setAttribute("class", "sub")
-    sub.innerText = resultSub
+    sub.innerText = result
+    screenResult.appendChild(sub)
+  } else if (clickedNumber.includes("×")) {
+    result = parseFloat(onlyNumbers[0])
+    onlyNumbers.slice(1).forEach((num) => {
+      result *= parseFloat(num)
+    })
+    const sub = document.createElement("span")
+    sub.setAttribute("class", "sub")
+    sub.innerText = result
     screenResult.appendChild(sub)
   }
   clickedNumber = []
