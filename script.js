@@ -86,6 +86,7 @@ const finalResult = () => {
   screenResult.appendChild(finalSolve)
 
   if (clickedNumber.includes("+")) {
+    result = 0
     onlyNumbers.forEach((num) => {
       result += num
     })
@@ -110,7 +111,7 @@ const finalResult = () => {
     finalSolve.innerText = result
   }
   clickedNumber = [result]
-  
+
   clickedItem = []
 }
 
