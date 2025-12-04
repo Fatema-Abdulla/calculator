@@ -3,6 +3,7 @@ let clickedNumber = []
 let clickedItem = []
 let currentNumber = ""
 let result = 0
+let checkIsProcess = false
 
 let screenResult = document.querySelector(".result")
 let clearButton = document.querySelector(".clear-result")
@@ -12,19 +13,19 @@ const itemCalculator = [
   1,
   2,
   3,
-  "+",
+  "÷",
   4,
   5,
   6,
-  "-",
+  "×",
   7,
   8,
   9,
-  "×",
-  ".",
+  "-",
   0,
+  ".",
   "=",
-  "÷",
+  "+",
 ]
 
 const operators = ["+", "-", "×", "÷"]
@@ -52,9 +53,28 @@ const clickButton = (index) => {
     !operators.includes(indexNumber) ||
     !operators.includes(clickedItem[clickedItem.length - 1])
   ) {
-    specificNumber.innerText = indexNumber
+    if (
+      clickedItem.length === 0 &&
+      operators.includes(indexNumber) &&
+      checkIsProcess === false &&
+      clickedNumber.length === 0
+    ) {
+      clickedItem.push(0)
+      specificNumber.innerText = 0 + indexNumber
+    } else {
+      specificNumber.innerText = indexNumber
+    }
     clickedItem.push(indexNumber)
   }
+
+  if (
+      clickedItem.length === 0 &&
+      operators.includes(indexNumber) &&
+      checkIsProcess === false &&
+      clickedNumber.length === 0
+    ){
+      clickedNumber.push(0)
+    }
 
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
@@ -72,13 +92,14 @@ const clickButton = (index) => {
       currentNumber = ""
     }
     clickedNumber.push(indexNumber)
+    console.log(clickedNumber)
   }
   screenResult.appendChild(specificNumber)
 }
 
 const finalResult = () => {
   screenResult.innerHTML = ""
-  const onlyNumbers = clickedNumber.filter((num) => typeof num === 'number')
+  const onlyNumbers = clickedNumber.filter((num) => typeof num === "number")
 
   const finalSolve = document.createElement("span")
   finalSolve.setAttribute("class", "solve")
@@ -111,6 +132,7 @@ const finalResult = () => {
     finalSolve.innerText = result
   }
   clickedNumber = [result]
+  checkIsProcess = true
   clickedItem = []
 }
 
@@ -119,6 +141,7 @@ const clearNumber = () => {
   clickedNumber = []
   clickedItem = []
   result = 0
+  checkIsProcess = false
 }
 
 ///// Events
