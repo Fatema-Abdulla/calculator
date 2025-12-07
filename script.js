@@ -1,5 +1,5 @@
 ///// Global variable
-let clickedNumber = []
+let calculationNumber = []
 let clickedItem = []
 let currentNumber = ""
 let result = 0
@@ -57,17 +57,11 @@ const clickButton = (index) => {
       clickedItem.length === 0 &&
       operators.includes(indexNumber) &&
       checkIsProcess === false &&
-      clickedNumber.length === 0
+      calculationNumber.length === 0
     ) {
       clickedItem.push(0)
-      clickedNumber.push(0)
+      calculationNumber.push(0)
       specificNumber.innerText = 0 + indexNumber
-    } else if (
-      clickedItem.length === 0 &&
-      indexNumber === "." &&
-      checkIsProcess === false
-    ) {
-      specificNumber.innerText = "0" + indexNumber
     } else {
       specificNumber.innerText = indexNumber
     }
@@ -81,16 +75,17 @@ const clickButton = (index) => {
     if (!currentNumber.includes(".")) {
       if (currentNumber === "") {
         currentNumber = "0."
+        specificNumber.innerText = 0 + indexNumber
       } else {
         currentNumber += "."
       }
     }
   } else {
     if (currentNumber !== "") {
-      clickedNumber.push(parseFloat(currentNumber))
+      calculationNumber.push(parseFloat(currentNumber))
       currentNumber = ""
     }
-    clickedNumber.push(indexNumber)
+    calculationNumber.push(indexNumber)
   }
   screenResult.appendChild(specificNumber)
 }
@@ -98,46 +93,46 @@ const clickButton = (index) => {
 const finalResult = () => {
   screenResult.innerHTML = ""
   // reference: https://stackoverflow.com/questions/69816276/javascript-arrays-filter-by-type
-  const onlyNumbers = clickedNumber.filter((num) => typeof num === "number")
+  const onlyNumbers = calculationNumber.filter((num) => typeof num === "number")
 
   const finalSolve = document.createElement("span")
   finalSolve.setAttribute("class", "solve")
   finalSolve.innerText = ""
   screenResult.appendChild(finalSolve)
 
-  if (clickedNumber.includes("+")) {
+  if (calculationNumber.includes("+")) {
     result = 0
     onlyNumbers.forEach((num) => {
       result += num
     })
     finalSolve.innerText = result
-  } else if (clickedNumber.includes("-")) {
+  } else if (calculationNumber.includes("-")) {
     result = onlyNumbers[0]
     onlyNumbers.slice(1).forEach((num) => {
       result -= num
     })
     finalSolve.innerText = result
-  } else if (clickedNumber.includes("×")) {
+  } else if (calculationNumber.includes("×")) {
     result = onlyNumbers[0]
     onlyNumbers.slice(1).forEach((num) => {
       result *= num
     })
     finalSolve.innerText = result
-  } else if (clickedNumber.includes("÷")) {
+  } else if (calculationNumber.includes("÷")) {
     result = onlyNumbers[0]
     onlyNumbers.slice(1).forEach((num) => {
       result /= num
     })
     finalSolve.innerText = result
   }
-  clickedNumber = [result]
+  calculationNumber = [result]
   checkIsProcess = true
   clickedItem = []
 }
 
 const clearNumber = () => {
   screenResult.innerHTML = ""
-  clickedNumber = []
+  calculationNumber = []
   clickedItem = []
   result = 0
   checkIsProcess = false
