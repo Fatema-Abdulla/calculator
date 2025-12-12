@@ -10,6 +10,8 @@ let checkIsProcess = false
 let screenResult = document.querySelector(".result")
 let clearButton = document.querySelector(".clear-result")
 let number = document.querySelector(".button-number")
+let history = document.querySelector(".container")
+let historyClearButton = document.querySelector(".clear-history")
 
 const itemCalculator = [
   1,
@@ -70,6 +72,9 @@ const clickButton = (index) => {
   } else {
     specificNumber.innerText = indexNumber
   }
+  if(checkIsProcess === false && indexNumber === "."){
+    clickedItem.push(0)
+  }
   clickedItem.push(indexNumber)
 
   if (indexNumber === "." && operators.includes(lastItem)) {
@@ -90,6 +95,7 @@ const clickButton = (index) => {
       if (currentNumber === "") {
         if (checkIsProcess === false) {
           currentNumber = "0."
+          console.log(clickedItem)
           specificNumber.innerText = 0 + indexNumber
         }
       } else {
@@ -99,7 +105,7 @@ const clickButton = (index) => {
     }
   } else {
     if (currentNumber !== "") {
-      calculationNumber.push(math.bignumber(currentNumber))
+      calculationNumber.push(currentNumber)
       currentNumber = ""
     }
     calculationNumber.push(indexNumber)
@@ -142,8 +148,15 @@ const finalResult = () => {
 
   result = math.evaluate(expression)
 
-  showResult.innerText = result.toString()
-  calculationNumber = [result.toString()]
+  let strResult = result.toString()
+
+  localStorage.setItem("expression", clickedItem.join(""))
+  localStorage.setItem("lastResult", strResult)
+  localStorage.setItem("data", new Date().toString().slice(16, 25))
+  historyResult()
+
+  showResult.innerText = strResult
+  calculationNumber = [strResult]
   clickedItem = []
   currentNumber = ""
   previousResult = ""
@@ -160,6 +173,33 @@ const clearNumber = () => {
   checkIsProcess = false
 }
 
+const historyResult = () => {
+  let formula = localStorage.getItem("expression")
+  let saveResult = localStorage.getItem("lastResult")
+  let data = localStorage.getItem("data")
+
+  const specificResult = document.createElement("span")
+  const showFinalResult = document.createElement("p")
+  const currentDate = document.createElement("p")
+
+  specificResult.setAttribute("class", "container-result")
+  showFinalResult.setAttribute("class", "container--final-result")
+  currentDate.setAttribute("class", "time")
+
+  specificResult.innerText = formula
+  showFinalResult.innerText = saveResult
+  currentDate.innerText = data
+
+  history.appendChild(specificResult)
+  history.appendChild(showFinalResult)
+  history.appendChild(currentDate)
+}
+
+const clearHistory = () => {
+  localStorage.clear()
+  history.innerHTML = ""
+}
+
 ///// Events
 for (let i = 0; i < calculator.length; i++) {
   calculator[i].addEventListener("click", () => {
@@ -169,3 +209,4 @@ for (let i = 0; i < calculator.length; i++) {
 
 clearButton.addEventListener("click", clearNumber)
 equalButton.addEventListener("click", finalResult)
+historyClearButton.addEventListener("click", clearHistory)
