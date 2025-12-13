@@ -72,7 +72,7 @@ const clickButton = (index) => {
   } else {
     specificNumber.innerText = indexNumber
   }
-  if(checkIsProcess === false && indexNumber === "."){
+  if (checkIsProcess === false && indexNumber === ".") {
     clickedItem.push(0)
   }
   clickedItem.push(indexNumber)
@@ -81,15 +81,9 @@ const clickButton = (index) => {
     checkIsProcess = false
   }
 
-  if (indexNumber === "." && checkIsProcess === true) {
-    previousResult = result.toString()
-    if (previousResult.includes(".")) {
-      return
-    }
-  }
-
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
+    console.log(currentNumber)
   } else if (indexNumber === ".") {
     if (!currentNumber.includes(".")) {
       if (currentNumber === "") {
@@ -97,6 +91,11 @@ const clickButton = (index) => {
           currentNumber = "0."
           console.log(clickedItem)
           specificNumber.innerText = 0 + indexNumber
+        } else if (checkIsProcess === true) {
+          previousResult = result.toString()
+          if (previousResult.includes(".")) {
+            return
+          }
         }
       } else {
         currentNumber += "."
@@ -150,16 +149,18 @@ const finalResult = () => {
 
   let strResult = result.toString()
 
+  // reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
   localStorage.setItem("expression", clickedItem.join(""))
   localStorage.setItem("lastResult", strResult)
   localStorage.setItem("data", new Date().toString().slice(16, 25))
+  localStorage.setItem("previousResult", previousResult)
   historyResult()
 
   showResult.innerText = strResult
   calculationNumber = [strResult]
   clickedItem = []
   currentNumber = ""
-  previousResult = ""
+  previousResult = strResult
   checkIsProcess = true
 }
 
@@ -174,19 +175,27 @@ const clearNumber = () => {
 }
 
 const historyResult = () => {
+  let previous = localStorage.getItem("previousResult")
   let formula = localStorage.getItem("expression")
   let saveResult = localStorage.getItem("lastResult")
   let data = localStorage.getItem("data")
 
-  const specificResult = document.createElement("span")
+  const specificResult = document.createElement("p")
+  const showPreviousResult = document.createElement("span")
   const showFinalResult = document.createElement("p")
   const currentDate = document.createElement("p")
 
+  showPreviousResult.setAttribute("class", "previous-result")
   specificResult.setAttribute("class", "container-result")
-  showFinalResult.setAttribute("class", "container--final-result")
+  showFinalResult.setAttribute("class", "container-final-result")
   currentDate.setAttribute("class", "time")
 
-  specificResult.innerText = formula
+  if (previous) {
+    specificResult.innerText = previous + formula
+  } else {
+    specificResult.innerText = formula
+  }
+
   showFinalResult.innerText = saveResult
   currentDate.innerText = data
 
