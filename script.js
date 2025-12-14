@@ -6,6 +6,8 @@ let previousResult = ""
 let expression = ""
 let result = 0
 let isAfterEqual = false
+
+// Load history from localStorage
 let historyData = JSON.parse(localStorage.getItem("history")) || []
 
 let screenResult = document.querySelector(".result")
@@ -57,12 +59,14 @@ const clickButton = (index) => {
   specificNumber.setAttribute("class", "number-calculator")
   specificNumber.setAttribute("id", `${index}`)
 
+  // Prevent double operators or multiple dots
   if (
     (operators.includes(indexNumber) && operators.includes(lastItem)) ||
     (indexNumber === "." && currentNumber.includes("."))
   ) {
     return
   } else if (
+    // Handle operator as first input
     clickedItem.length === 0 &&
     operators.includes(indexNumber) &&
     isAfterEqual === false &&
@@ -76,6 +80,7 @@ const clickButton = (index) => {
   }
   clickedItem.push(indexNumber)
 
+  // Handle input after "="
   if (isAfterEqual === true) {
     if (
       operators.includes(indexNumber) ||
@@ -87,6 +92,7 @@ const clickButton = (index) => {
       isAfterEqual = false
     }
 
+    // Handle dot after result
     if (indexNumber === ".") {
       if (previousResult.includes(".")) return
       currentNumber = "."
@@ -97,9 +103,12 @@ const clickButton = (index) => {
     }
   }
 
+  // Handle numbers
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
-  } else if (indexNumber === ".") {
+  }
+  // Handle decimal point
+  else if (indexNumber === ".") {
     if (!currentNumber.includes(".")) {
       if (currentNumber === "") {
         if (isAfterEqual === false) {
@@ -111,7 +120,9 @@ const clickButton = (index) => {
         specificNumber.innerText = "."
       }
     }
-  } else {
+  }
+  // Handle operators
+  else {
     if (currentNumber !== "") {
       calculationNumber.push(currentNumber)
       currentNumber = ""
@@ -129,6 +140,7 @@ const finalResult = () => {
   showResult.setAttribute("class", "solve")
   screenResult.appendChild(showResult)
 
+  // Syntax validation
   if (
     calculationNumber.length === 0 ||
     itemBeforeEqual === "." ||
@@ -139,6 +151,7 @@ const finalResult = () => {
     return
   }
 
+  // Configure math.js for high precision
   math.config({
     number: "BigNumber",
     precision: 64,
