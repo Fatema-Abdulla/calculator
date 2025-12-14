@@ -38,13 +38,13 @@ const operators = ["+", "-", "×", "÷"]
 // display the number in array
 for (let i = 0; i < itemCalculator.length; i++) {
   const allNumber = document.createElement("span")
-  allNumber.setAttribute("class", "numbers")
+  allNumber.setAttribute("class", "calculator-item")
   allNumber.setAttribute("id", `n${i}`)
   allNumber.innerText = itemCalculator[i]
   number.appendChild(allNumber)
 }
 
-let calculator = document.querySelectorAll(".numbers")
+let calculator = document.querySelectorAll(".calculator-item")
 let equalButton = document.querySelector("#n14")
 
 ///// Function
@@ -77,7 +77,10 @@ const clickButton = (index) => {
   clickedItem.push(indexNumber)
 
   if (isAfterEqual === true) {
-    if (operators.includes(indexNumber)) {
+    if (
+      operators.includes(indexNumber) ||
+      (indexNumber !== "." && !operators.includes(indexNumber))
+    ) {
       calculationNumber = [previousResult]
       clickedItem = [previousResult]
       currentNumber = ""
@@ -86,17 +89,16 @@ const clickButton = (index) => {
 
     if (indexNumber === ".") {
       if (previousResult.includes(".")) return
-      currentNumber = previousResult + "."
-      isAfterEqual = false
+      currentNumber = "."
       specificNumber.innerText = "."
       screenResult.appendChild(specificNumber)
+      isAfterEqual = false
       return
     }
   }
 
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
-    console.log(currentNumber)
   } else if (indexNumber === ".") {
     if (!currentNumber.includes(".")) {
       if (currentNumber === "") {
@@ -114,7 +116,6 @@ const clickButton = (index) => {
       calculationNumber.push(currentNumber)
       currentNumber = ""
     }
-    console.log(clickedItem)
     calculationNumber.push(indexNumber)
   }
   screenResult.appendChild(specificNumber)
@@ -138,9 +139,6 @@ const finalResult = () => {
     return
   }
 
-  // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join
-  // reference: https://mathjs.org/index.html
-  // reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions
   math.config({
     number: "BigNumber",
     precision: 64,
@@ -157,8 +155,6 @@ const finalResult = () => {
 
   let strResult = result.toString()
 
-  // reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
-  // reference : https://javascript.info/localstorage
   const historyItem = {
     expression: calculationNumber.join(""),
     result: strResult,
@@ -189,11 +185,18 @@ const clearNumber = () => {
 }
 
 const renderHistory = (item) => {
+  const emptyMessage = history.querySelector(".container-empty-history")
+  if (emptyMessage) {
+    emptyMessage.remove()
+  }
+
+  const eachResultContainer = document.createElement("div")
   const finalOperation = document.createElement("p")
   const showFinalResult = document.createElement("p")
   const currentDate = document.createElement("p")
 
-  finalOperation.setAttribute("class", "container-result")
+  eachResultContainer.setAttribute("class", "container-each-result")
+  finalOperation.setAttribute("class", "container-history-result")
   showFinalResult.setAttribute("class", "container-final-result")
   currentDate.setAttribute("class", "time")
 
@@ -201,15 +204,21 @@ const renderHistory = (item) => {
   showFinalResult.innerText = item.result
   currentDate.innerText = item.date
 
-  history.appendChild(finalOperation)
-  history.appendChild(showFinalResult)
-  history.appendChild(currentDate)
+  history.appendChild(eachResultContainer)
+  eachResultContainer.appendChild(finalOperation)
+  eachResultContainer.appendChild(showFinalResult)
+  eachResultContainer.appendChild(currentDate)
 }
 
 const clearHistory = () => {
   localStorage.removeItem("history")
   historyData = []
   history.innerHTML = ""
+
+  const emptyHistory = document.createElement("p")
+  emptyHistory.setAttribute("class", "container-empty-history")
+  emptyHistory.innerText = "History Empty!!"
+  history.appendChild(emptyHistory)
 }
 
 ///// Events
@@ -225,7 +234,16 @@ historyClearButton.addEventListener("click", clearHistory)
 
 //// AI : ChatGPT
 window.addEventListener("load", () => {
-  historyData.forEach((item) => {
-    renderHistory(item)
-  })
+  history.innerHTML = ""
+
+  if (historyData.length === 0) {
+    const emptyHistory = document.createElement("p")
+    emptyHistory.setAttribute("class", "container-empty-history")
+    emptyHistory.innerText = "History Empty!!"
+    history.appendChild(emptyHistory)
+  } else {
+    historyData.forEach((item) => {
+      renderHistory(item)
+    })
+  }
 })

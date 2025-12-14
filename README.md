@@ -1,4 +1,4 @@
-# Web Calculator History
+# Equalsy - Calculator
 ## Date: 11/30/2025
 ### By: Fatema Hussain
 **[GitHub](https://github.com/Fatema-Abdulla) | [LinkedIn](https://www.linkedin.com/in/fatema-abdulla-bh)**
@@ -27,3 +27,9 @@ The calculator has been uploaded and published; you can view the calculator [her
 
 ***
 #### ***Credits***
+[Library math.js link](https://cdnjs.com/libraries/mathjs)
+[Library math.js link](https://mathjs.org/index.html)
+[Join](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)
+[Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
+[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+[Use JSON with localstorage](https://javascript.info/localstorage)
