@@ -6,6 +6,7 @@ let previousResult = ""
 let expression = ""
 let result = 0
 let isAfterEqual = false
+let historyData = JSON.parse(localStorage.getItem("history")) || []
 
 let screenResult = document.querySelector(".result")
 let clearButton = document.querySelector(".clear-result")
@@ -157,10 +158,17 @@ const finalResult = () => {
   let strResult = result.toString()
 
   // reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
-  localStorage.setItem("expression", calculationNumber.join(""))
-  localStorage.setItem("lastResult", strResult)
-  localStorage.setItem("data", new Date().toString().slice(3, 25))
-  historyResult()
+  // reference : https://javascript.info/localstorage
+  const historyItem = {
+    expression: calculationNumber.join(""),
+    result: strResult,
+    date: new Date().toString().slice(3, 25),
+  }
+
+  historyData.push(historyItem)
+  localStorage.setItem("history", JSON.stringify(historyData))
+
+  renderHistory(historyItem)
 
   showResult.innerText = strResult
   calculationNumber = [strResult]
@@ -180,11 +188,7 @@ const clearNumber = () => {
   isAfterEqual = false
 }
 
-const historyResult = () => {
-  let formula = localStorage.getItem("expression")
-  let saveResult = localStorage.getItem("lastResult")
-  let data = localStorage.getItem("data")
-
+const renderHistory = (item) => {
   const finalOperation = document.createElement("p")
   const showFinalResult = document.createElement("p")
   const currentDate = document.createElement("p")
@@ -193,9 +197,9 @@ const historyResult = () => {
   showFinalResult.setAttribute("class", "container-final-result")
   currentDate.setAttribute("class", "time")
 
-  finalOperation.innerText = formula
-  showFinalResult.innerText = saveResult
-  currentDate.innerText = data
+  finalOperation.innerText = item.expression
+  showFinalResult.innerText = item.result
+  currentDate.innerText = item.date
 
   history.appendChild(finalOperation)
   history.appendChild(showFinalResult)
@@ -203,7 +207,8 @@ const historyResult = () => {
 }
 
 const clearHistory = () => {
-  localStorage.clear()
+  localStorage.removeItem("history")
+  historyData = []
   history.innerHTML = ""
 }
 
@@ -218,8 +223,9 @@ clearButton.addEventListener("click", clearNumber)
 equalButton.addEventListener("click", finalResult)
 historyClearButton.addEventListener("click", clearHistory)
 
+//// AI : ChatGPT
 window.addEventListener("load", () => {
-  if (localStorage.getItem("expression")) {
-    historyResult()
-  }
+  historyData.forEach((item) => {
+    renderHistory(item)
+  })
 })
