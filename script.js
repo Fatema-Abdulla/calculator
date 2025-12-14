@@ -82,23 +82,22 @@ const clickButton = (index) => {
   }
 
   if (checkIsProcess === true && operators.includes(indexNumber)) {
-  calculationNumber = [previousResult]
-  clickedItem = [previousResult]
-  currentNumber = ""
-  checkIsProcess = false
-}
+    calculationNumber = [previousResult]
+    clickedItem = [previousResult]
+    currentNumber = ""
+    checkIsProcess = false
+  }
 
-if (checkIsProcess === true && indexNumber === ".") {
-  if (previousResult.includes(".")) return
-  calculationNumber = []
-  clickedItem = []
-  currentNumber = previousResult + "."
-  specificNumber.innerText = "."
-  checkIsProcess = false
-  screenResult.appendChild(specificNumber)
-  return
-}
-
+  if (checkIsProcess === true && indexNumber === ".") {
+    if (previousResult.includes(".")) return
+    calculationNumber = []
+    clickedItem = []
+    currentNumber = previousResult + "."
+    specificNumber.innerText = "."
+    checkIsProcess = false
+    screenResult.appendChild(specificNumber)
+    return
+  }
 
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
@@ -164,10 +163,9 @@ const finalResult = () => {
   let strResult = result.toString()
 
   // reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
-  localStorage.setItem("expression", clickedItem.join(""))
+  localStorage.setItem("expression", calculationNumber.join(""))
   localStorage.setItem("lastResult", strResult)
   localStorage.setItem("data", new Date().toString().slice(16, 25))
-  localStorage.setItem("previousResult", previousResult)
   historyResult()
 
   showResult.innerText = strResult
@@ -189,31 +187,23 @@ const clearNumber = () => {
 }
 
 const historyResult = () => {
-  let previous = localStorage.getItem("previousResult")
   let formula = localStorage.getItem("expression")
   let saveResult = localStorage.getItem("lastResult")
   let data = localStorage.getItem("data")
 
-  const specificResult = document.createElement("p")
-  const showPreviousResult = document.createElement("span")
+  const finalOperation = document.createElement("p")
   const showFinalResult = document.createElement("p")
   const currentDate = document.createElement("p")
 
-  showPreviousResult.setAttribute("class", "previous-result")
-  specificResult.setAttribute("class", "container-result")
+  finalOperation.setAttribute("class", "container-result")
   showFinalResult.setAttribute("class", "container-final-result")
   currentDate.setAttribute("class", "time")
 
-  if (previous) {
-    specificResult.innerText = previous + formula
-  } else {
-    specificResult.innerText = formula
-  }
-
+  finalOperation.innerText = formula
   showFinalResult.innerText = saveResult
   currentDate.innerText = data
 
-  history.appendChild(specificResult)
+  history.appendChild(finalOperation)
   history.appendChild(showFinalResult)
   history.appendChild(currentDate)
 }
