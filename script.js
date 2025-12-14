@@ -5,7 +5,7 @@ let currentNumber = ""
 let previousResult = ""
 let expression = ""
 let result = 0
-let checkIsProcess = false
+let isAfterEqual = false
 
 let screenResult = document.querySelector(".result")
 let clearButton = document.querySelector(".clear-result")
@@ -56,47 +56,41 @@ const clickButton = (index) => {
   specificNumber.setAttribute("class", "number-calculator")
   specificNumber.setAttribute("id", `${index}`)
 
-  if (operators.includes(indexNumber) && operators.includes(lastItem)) {
+  if (
+    (operators.includes(indexNumber) && operators.includes(lastItem)) ||
+    (indexNumber === "." && currentNumber.includes("."))
+  ) {
     return
   } else if (
     clickedItem.length === 0 &&
     operators.includes(indexNumber) &&
-    checkIsProcess === false &&
+    isAfterEqual === false &&
     calculationNumber.length === 0
   ) {
     clickedItem.push(0)
     calculationNumber.push(0)
     specificNumber.innerText = 0 + indexNumber
-  } else if (indexNumber === "." && currentNumber.includes(".")) {
-    return
   } else {
     specificNumber.innerText = indexNumber
   }
-  if (checkIsProcess === false && indexNumber === ".") {
-    clickedItem.push(0)
-  }
   clickedItem.push(indexNumber)
 
-  if (indexNumber === "." && operators.includes(lastItem)) {
-    checkIsProcess = false
-  }
+  if (isAfterEqual === true) {
+    if (operators.includes(indexNumber)) {
+      calculationNumber = [previousResult]
+      clickedItem = [previousResult]
+      currentNumber = ""
+      isAfterEqual = false
+    }
 
-  if (checkIsProcess === true && operators.includes(indexNumber)) {
-    calculationNumber = [previousResult]
-    clickedItem = [previousResult]
-    currentNumber = ""
-    checkIsProcess = false
-  }
-
-  if (checkIsProcess === true && indexNumber === ".") {
-    if (previousResult.includes(".")) return
-    calculationNumber = []
-    clickedItem = []
-    currentNumber = previousResult + "."
-    specificNumber.innerText = "."
-    checkIsProcess = false
-    screenResult.appendChild(specificNumber)
-    return
+    if (indexNumber === ".") {
+      if (previousResult.includes(".")) return
+      currentNumber = previousResult + "."
+      isAfterEqual = false
+      specificNumber.innerText = "."
+      screenResult.appendChild(specificNumber)
+      return
+    }
   }
 
   if (!isNaN(indexNumber)) {
@@ -105,7 +99,7 @@ const clickButton = (index) => {
   } else if (indexNumber === ".") {
     if (!currentNumber.includes(".")) {
       if (currentNumber === "") {
-        if (checkIsProcess === false) {
+        if (isAfterEqual === false) {
           currentNumber = "0."
           specificNumber.innerText = 0 + indexNumber
         }
@@ -165,7 +159,7 @@ const finalResult = () => {
   // reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
   localStorage.setItem("expression", calculationNumber.join(""))
   localStorage.setItem("lastResult", strResult)
-  localStorage.setItem("data", new Date().toString().slice(16, 25))
+  localStorage.setItem("data", new Date().toString().slice(3, 25))
   historyResult()
 
   showResult.innerText = strResult
@@ -173,7 +167,7 @@ const finalResult = () => {
   clickedItem = []
   currentNumber = ""
   previousResult = strResult
-  checkIsProcess = true
+  isAfterEqual = true
 }
 
 const clearNumber = () => {
@@ -183,7 +177,7 @@ const clearNumber = () => {
   calculationNumber = []
   clickedItem = []
   result = 0
-  checkIsProcess = false
+  isAfterEqual = false
 }
 
 const historyResult = () => {
@@ -223,3 +217,9 @@ for (let i = 0; i < calculator.length; i++) {
 clearButton.addEventListener("click", clearNumber)
 equalButton.addEventListener("click", finalResult)
 historyClearButton.addEventListener("click", clearHistory)
+
+window.addEventListener("load", () => {
+  if (localStorage.getItem("expression")) {
+    historyResult()
+  }
+})
