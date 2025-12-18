@@ -50,14 +50,12 @@ let calculator = document.querySelectorAll(".calculator-item")
 let equalButton = document.querySelector("#n14")
 
 ///// Function
-
 const clickButton = (index) => {
   let indexNumber = calculator[index].innerText
   let lastItem = clickedItem[clickedItem.length - 1]
 
   const specificNumber = document.createElement("span")
   specificNumber.setAttribute("class", "number-calculator")
-  specificNumber.setAttribute("id", `${index}`)
 
   // Prevent double operators or multiple dots
   if (
@@ -103,6 +101,8 @@ const clickButton = (index) => {
     }
   }
 
+  let checkLastLetter = currentNumber.endsWith(".")
+
   // Handle numbers
   if (!isNaN(indexNumber)) {
     currentNumber += indexNumber
@@ -121,8 +121,13 @@ const clickButton = (index) => {
       }
     }
   }
+
   // Handle operators
   else {
+    if (isAfterEqual === false && checkLastLetter === true) {
+      currentNumber += 0
+      specificNumber.innerText = 0 + indexNumber
+    }
     if (currentNumber !== "") {
       calculationNumber.push(currentNumber)
       currentNumber = ""
@@ -171,7 +176,7 @@ const finalResult = () => {
   const historyItem = {
     expression: calculationNumber.join(""),
     result: strResult,
-    date: new Date().toString().slice(3, 25),
+    date: new Date().toString().slice(3, 21),
   }
 
   historyData.push(historyItem)

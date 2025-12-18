@@ -15,7 +15,7 @@ A simple and user-friendly calculator that performs basic and advanced calculati
 ***
 #### ***Get Started***
 
-The calculator has been uploaded and published; you can view the calculator [here](#).
+The calculator has been deployed and is now live. You can view it here: [Calculator Demo](#).
 ***
 #### ***WireFrame***
 ![Calculator](./assets/Calculator.png)
@@ -33,3 +33,5 @@ The calculator has been uploaded and published; you can view the calculator [her
 [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 [Use JSON with localstorage](https://javascript.info/localstorage)
+[endsWith()](https://www.w3schools.com/jsref/jsref_endswith.asp)
+
