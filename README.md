@@ -12,11 +12,11 @@ A simple and user-friendly calculator that performs basic and advanced calculati
     * HTML
     * CSS
     * JavaScript
-  
+
 ***
 #### ***Get Started***
 
-The calculator has been deployed and is now live. You can view it here: [Calculator Demo](#).
+The calculator has been deployed and is now live. You can view it here: [Calculator Demo](https://fatema-abdulla.github.io/calculator/).
 
 ***
 #### ***WireFrame***
