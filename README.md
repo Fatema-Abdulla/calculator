@@ -27,11 +27,11 @@ The calculator has been deployed and is now live. You can view it here: [Calcula
 
 ***
 #### ***Credits***
-[Library math.js link](https://cdnjs.com/libraries/mathjs)
-[Library math.js link](https://mathjs.org/index.html)
-[Join](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)
-[Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
-[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
-[Use JSON with localstorage](https://javascript.info/localstorage)
-[endsWith()](https://www.w3schools.com/jsref/jsref_endswith.asp)
+##### [Library math.js link](https://cdnjs.com/libraries/mathjs)
+##### [Library math.js](https://mathjs.org/index.html)
+##### [Join](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)
+##### [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
+##### [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+##### [Use JSON with localstorage](https://javascript.info/localstorage)
+##### [endsWith()](https://www.w3schools.com/jsref/jsref_endswith.asp)
 
