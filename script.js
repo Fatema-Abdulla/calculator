@@ -235,7 +235,7 @@ const clearHistory = () => {
 
   const emptyHistory = document.createElement("p")
   emptyHistory.setAttribute("class", "container-empty-history")
-  emptyHistory.innerText = "History Empty!!"
+  emptyHistory.innerText = "There's no history!!"
   history.appendChild(emptyHistory)
 }
 
